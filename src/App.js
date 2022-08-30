@@ -1,23 +1,59 @@
-import logo from './logo.svg';
-import './App.css';
+import { Suspense } from "react";
+import { Canvas } from "@react-three/fiber";
+import { Environment, OrbitControls } from "@react-three/drei";
+import { useControls } from "leva";
+import Model from "./Deneme.js";
 
+import "./App.css";
 function App() {
+  const props = useControls({
+    uFrequency: {
+      start: 0,
+      end: 500,
+      step: 1,
+    },
+    uAmplitude: {
+      value: 0,
+      start: 4,
+      end: 500,
+      step: 1,
+    },
+
+    uDensity: {
+      start: 0,
+      end: 1,
+      step: 1,
+    },
+    uStrength: {
+      start: 0,
+      end: 1.1,
+    },
+    // fragment
+    uDeepPurple: {
+      start: 1000,
+      end: 0,
+      step: 200,
+    },
+    uOpacity: {
+      // max 1
+
+      start: 0.1,
+      end: 2,
+    },
+  });
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Canvas>
+        <OrbitControls
+          makeDefault
+          autoRotate
+          autoRotateSpeed={0.5}
+          zoomSpeed={0.1}
+        />
+        <Suspense fallback={null}>
+          <Model {...props} />
+        </Suspense>
+      </Canvas>
     </div>
   );
 }
