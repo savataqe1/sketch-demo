@@ -1,60 +1,63 @@
-import { Suspense } from "react";
+import { Suspense, useRef } from "react";
 import { Canvas } from "@react-three/fiber";
-import { Environment, OrbitControls } from "@react-three/drei";
-import { useControls } from "leva";
+import {
+  Environment,
+  OrbitControls,
+  Scroll,
+  ScrollControls,
+  Html,
+} from "@react-three/drei";
+import CustomCursor from "./CustomCursor";
+import Header from "./components/Header";
+import Navbar from "./components/Navbar";
+import useLocoScroll from "./hooks/useLocoScroll";
+
 import Model from "./Deneme.js";
+import SmoothScroll from "./utils/SmoothScroll";
+import React, { useState } from "react";
+import { pageData } from "./data";
+import Header2 from "./components/MainHeader";
+import Keader from "./components/Header";
 
-import "./App.css";
+import ContactButton from "./components/ContactButton";
+import MenuManager from "./components/Menu/MenuManager";
+import "./App.scss";
 function App() {
-  const props = useControls({
-    uFrequency: {
-      start: 0,
-      end: 500,
-      step: 1,
-    },
-    uAmplitude: {
-      value: 0,
-      start: 4,
-      end: 500,
-      step: 1,
-    },
-
-    uDensity: {
-      start: 0,
-      end: 1,
-      step: 1,
-    },
-    uStrength: {
-      start: 0,
-      end: 1.1,
-    },
-    // fragment
-    uDeepPurple: {
-      start: 1000,
-      end: 0,
-      step: 200,
-    },
-    uOpacity: {
-      // max 1
-
-      start: 0.1,
-      end: 2,
-    },
-  });
+  const ref = useRef(null);
+  // useLocoScroll();
   return (
-    <div className="App">
-      <Canvas>
-        <OrbitControls
-          makeDefault
-          autoRotate
-          autoRotateSpeed={0.5}
-          zoomSpeed={0.1}
-        />
-        <Suspense fallback={null}>
-          <Model {...props} />
-        </Suspense>
-      </Canvas>
-    </div>
+    <>
+      <CustomCursor />
+      <MenuManager>
+        <Header2 />
+        <div className="main-container2" id="main-container2">
+          <Header />
+          <ContactButton />
+        </div>
+      </MenuManager>
+      <SmoothScroll>
+        <section
+          className="main-container"
+          id="main-container"
+          data-scroll-container
+          ref={ref}
+        >
+          <Canvas
+            camera={[-0.04, -0.07, 0.05]}
+            gl={{
+              logarithmicDepthBuffer: true,
+              antialias: false,
+              stencil: false,
+              depth: false,
+            }}
+          >
+            <Suspense fallback={null}>
+              <Model />
+            </Suspense>
+          </Canvas>
+        </section>
+      </SmoothScroll>
+    </>
   );
 }
 

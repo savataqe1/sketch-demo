@@ -10,7 +10,6 @@ vec3 cosPalette(float t, vec3 a, vec3 b, vec3 c, vec3 d) {
 }     
  
 void main() {
-  gl_FragColor = vec4(1.0);
   float distort = vDistortion * 3.;
 
   vec3 brightness = vec3(.1, .1, .9);
@@ -22,6 +21,7 @@ void main() {
   
   gl_FragColor = vec4(color, vDistortion);
   gl_FragColor += vec4(min(uDeepPurple, 1.), 0., .5, min(uOpacity, 1.));
+
 }
 
 `;
